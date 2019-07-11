@@ -1,0 +1,41 @@
+{
+  "name": "gcp_charge_monitoring",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "config": {
+    "pubsub_topic_name": "charge_alert",
+    "function_name": "helloPubSub",
+    "credentials_path": "/secret/google_credentials.json"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "scripts": {
+    "unit_test": "$(npm bin)/ava test/unit.test.pubsub.js",
+    "integration_test": "functions deploy helloPubSub --trigger-topic hogeho_topic & $(npm bin)/ava test/integration.test.pubsub.js",
+    "system_test": "cross-env GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path $(npm bin)/ava test/system.pubsub.test.js",
+    "create_topic": "gcloud pubsub topics create $npm_package_config_pubsub_topic_name",
+    "deploy_function": "gcloud beta functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
+    "functions": "$(npm bin)/functions"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KokiKono/gcp_charge_monitoring.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KokiKono/gcp_charge_monitoring/issues"
+  },
+  "homepage": "https://github.com/KokiKono/gcp_charge_monitoring#readme",
+  "devDependencies": {
+    "@google-cloud/functions-emulator": "^1.0.0-beta.6",
+    "@google-cloud/pubsub": "^0.30.1",
+    "ava": "^2.2.0",
+    "child_process": "^1.0.2",
+    "cross-env": "^5.2.0",
+    "sinon": "^7.3.2",
+    "uuid": "^3.3.2"
+  }
+}
