@@ -12,3 +12,8 @@ exports.helloPubSub = (event, callback) => {
 
   callback();
 };
+
+exports.chargeMonitoring = (event, callback) => {
+    console.log('over amount');
+    callback();
+}
