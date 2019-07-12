@@ -1,4 +1,4 @@
-exports.chargeMonitoring = (event, callback) => {
+const chargeMonitoring = (event, callback) => {
     const pubsubMessage = event.data;
     const dataStr = Buffer.from(pubsubMessage.data, 'base64').toString();
     const data = JSON.parse(dataStr);
@@ -11,6 +11,7 @@ exports.chargeMonitoring = (event, callback) => {
     callback();
 }
 
-exports.isCostOver = (budge, cost) => {
+export const isCostOver = (budge, cost) => {
     return budge <= cost;
 }
+export default chargeMonitoring;

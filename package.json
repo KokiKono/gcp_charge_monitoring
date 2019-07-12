@@ -2,7 +2,7 @@
   "name": "gcp_charge_monitoring",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "config": {
     "pubsub_topic_name": "charge_alert",
     "function_name": "chargeMonitoring",
@@ -18,7 +18,9 @@
     "system_test": "cross-env GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path $(npm bin)/ava test/system.pubsub.test.js",
     "create_topic": "gcloud pubsub topics create $npm_package_config_pubsub_topic_name",
     "deploy_function": "gcloud beta functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
-    "functions": "$(npm bin)/functions"
+    "functions": "$(npm bin)/functions",
+    "build": "$(npm bin)/tsc",
+    "watch": "$(npm bin)/tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -38,6 +40,7 @@
     "cross-env": "^5.2.0",
     "moment": "^2.24.0",
     "sinon": "^7.3.2",
+    "typescript": "^3.5.3",
     "uuid": "^3.3.2"
   }
 }
