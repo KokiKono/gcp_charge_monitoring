@@ -42,5 +42,8 @@
     "sinon": "^7.3.2",
     "typescript": "^3.5.3",
     "uuid": "^3.3.2"
+  },
+  "dependencies": {
+    "googleapis": "^41.0.0"
   }
 }
