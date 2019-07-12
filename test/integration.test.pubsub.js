@@ -1,30 +1,19 @@
-const childProcess = require(`child_process`);
-const test = require(`ava`);
-const uuid = require(`uuid`);
+const childProsess = require('child_process');
+const test = require('ava');
 
-test(`helloPubSub: should print a name`, async (t) => {
-  t.plan(1);
-  const startTime = new Date(Date.now()).toISOString();
-  const name = uuid.v4();
+const pJson = require('../package.json');
+const function_name = pJson.config.function_name;
 
-  // Mock Pub/Sub call, as the emulator doesn't listen to Pub/Sub topics
-  const encodedName = Buffer.from(name).toString(`base64`);
-  const data = JSON.stringify({ data: encodedName });
-  childProcess.execSync(`functions call helloPubSub --data '${data}'`);
+test('chage monitoring: shoud print over amount', async (t) => {
+    const startTime = new Date(Date.now()).toISOString();
+    const data = require('./charge_amount_data').over_data;
 
-  // Check the emulator's logs
-  const logs = childProcess.execSync(`functions logs read helloPubSub --start-time ${startTime}`).toString();
-  t.true(logs.includes(`Hello, ${name}!`));
-});
-
-test(`helloPubSub: should print hello world`, async (t) => {
-  t.plan(1);
-  const startTime = new Date(Date.now()).toISOString();
-
-  // Mock Pub/Sub call, as the emulator doesn't listen to Pub/Sub topics
-  childProcess.execSync(`functions call helloPubSub --data {}`);
-
-  // Check the emulator's logs
-  const logs = childProcess.execSync(`functions logs read helloPubSub --start-time ${startTime}`).toString();
-  t.true(logs.includes(`Hello, World!`));
-});
+    // mock Pub/Sub call, as the emulator doesn't listen to Pub/Sub topics
+    const encodeData = Buffer.from(JSON.stringify(data)).toString('base64');
+    const pubsubData = JSON.stringify({data: encodeData});
+    childProsess.execSync(`functions call ${function_name} --data '${pubsubData}'`);
+    
+    // Check the emulator's logs
+    const logs = childProsess.execSync(`functions logs read ${function_name} --start-time ${startTime}`).toString();
+    t.true(logs.includes('over amount'));
+})

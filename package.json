@@ -5,15 +5,15 @@
   "main": "index.js",
   "config": {
     "pubsub_topic_name": "charge_alert",
-    "function_name": "helloPubSub",
+    "function_name": "chargeMonitoring",
     "credentials_path": "/secret/google_credentials.json"
   },
   "engines": {
     "node": "8"
   },
   "scripts": {
-    "unit_test": "$(npm bin)/ava test/*.unit.test.pubsub.js",
-    "integration_test": "functions deploy helloPubSub --trigger-topic hogeho_topic & $(npm bin)/ava test/integration.test.pubsub.js",
+    "unit_test": "$(npm bin)/ava test/unit.test.pubsub.js",
+    "integration_test": "functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name & $(npm bin)/ava test/integration.test.pubsub.js",
     "system_test": "cross-env GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path $(npm bin)/ava test/system.pubsub.test.js",
     "create_topic": "gcloud pubsub topics create $npm_package_config_pubsub_topic_name",
     "deploy_function": "gcloud beta functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
