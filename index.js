@@ -17,3 +17,7 @@ exports.chargeMonitoring = (event, callback) => {
     console.log('over amount');
     callback();
 }
+
+exports.isCostOver = (budge, cost) => {
+    return budge <= cost;
+}

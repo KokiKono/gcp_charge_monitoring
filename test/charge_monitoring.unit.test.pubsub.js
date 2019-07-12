@@ -6,8 +6,6 @@ const chargeMonitoring = require('..').chargeMonitoring;
 const consoleLog = sinon.stub(console, 'log');
 
 test.cb('charge monitoring: over amount case', t => {
-    t.plan(1);
-    
     const data = {
         budgetDisplayName: 'sample',
         alertThresholdExceeded: 1,
@@ -28,4 +26,11 @@ test.cb('charge monitoring: over amount case', t => {
         t.true(consoleLog.calledWith(`over amount`));
         t.end();
     });
+});
+
+test('monitor logic', t => {
+    const isCostOver = require('..').isCostOver;
+
+    t.true(isCostOver(100, 200));
+    t.false(isCostOver(200, 100));
 });
