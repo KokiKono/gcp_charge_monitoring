@@ -5,7 +5,7 @@ const moment = require('moment');
 const chargeMonitoring = require('..').chargeMonitoring;
 const consoleLog = sinon.stub(console, 'log');
 
-test.cb('charge monitoring', t => {
+test.cb('charge monitoring: over amount case', t => {
     t.plan(1);
     
     const data = {
