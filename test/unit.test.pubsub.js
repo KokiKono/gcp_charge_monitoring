@@ -24,3 +24,24 @@ test('monitor logic', t => {
     t.true(isCostOver(100, 200));
     t.false(isCostOver(200, 100));
 });
+
+
+test('charge monitoring: isEnableBilling', async (t) => {
+    const {isEnableBilling} = require('../lib/index');
+    const PROJECT_NAME = 'is_enable_billing';
+    // mock Billing API
+    const {google} = require('googleapis');
+    const cloudbilling = google.cloudbilling('v1');
+    sinon
+        .mock(cloudbilling.projects)
+        .expects('getBillingInfo')
+        .once()
+        .withArgs({name: PROJECT_NAME})
+        .resolves({
+            data: {
+                billingEnabled: true,
+            },
+        });
+    const result = await isEnableBilling(PROJECT_NAME, cloudbilling.projects);
+    t.true(result);
+})

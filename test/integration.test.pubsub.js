@@ -1,6 +1,5 @@
 const childProsess = require('child_process');
 const test = require('ava');
-const sinon = require('sinon');
 
 const pJson = require('../package.json');
 const function_name = pJson.config.function_name;
@@ -18,23 +17,3 @@ test('charge monitoring: shoud print over amount', async (t) => {
     const logs = childProsess.execSync(`functions logs read ${function_name} --start-time ${startTime}`).toString();
     t.true(logs.includes('over amount'));
 });
-
-test('charge monitoring: isEnableBilling', async (t) => {
-    const {isEnableBilling} = require('../lib/index');
-    const PROJECT_NAME = 'is_enable_billing';
-    // mock Billing API
-    const {google} = require('googleapis');
-    const cloudbilling = google.cloudbilling('v1');
-    sinon
-        .mock(cloudbilling.projects)
-        .expects('getBillingInfo')
-        .once()
-        .withArgs({name: PROJECT_NAME})
-        .resolves({
-            data: {
-                billingEnabled: true,
-            },
-        });
-    const result = await isEnableBilling(PROJECT_NAME, cloudbilling.projects);
-    t.true(result);
-})
