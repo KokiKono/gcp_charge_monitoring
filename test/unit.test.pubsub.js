@@ -1,25 +1,24 @@
 const test = require('ava');
 const sinon = require('sinon');
 
-const chargeMonitoring = require('..').chargeMonitoring;
+const {chargeMonitoring} = require('../lib');
 const consoleLog = sinon.stub(console, 'log');
 
 test.cb('charge monitoring: over amount case', t => {
-    const data = require('./charge_amount_data').over_data;
-    const event = {
-        data: {
-            data: Buffer.from(JSON.stringify(data)).toString('base64'),
-        }
+    const testData = require('./charge_amount_data').over_data;
+    const data = {
+        data: Buffer.from(JSON.stringify(testData)).toString('base64'),
     };
+    const context = {};
 
-    chargeMonitoring(event, () => {
+    chargeMonitoring(data, context, () => {
         t.true(consoleLog.calledWith(`over amount`));
         t.end();
     });
 });
 
 test('monitor logic', t => {
-    const isCostOver = require('..').isCostOver;
+    const {isCostOver} = require('../lib');
 
     t.true(isCostOver(100, 200));
     t.false(isCostOver(200, 100));
@@ -27,7 +26,7 @@ test('monitor logic', t => {
 
 
 test('charge monitoring: isEnableBilling', async (t) => {
-    const {isEnableBilling} = require('../lib/index');
+    const {isEnableBilling} = require('../lib');
     const PROJECT_NAME = 'is_enable_billing';
     // mock Billing API
     const {google} = require('googleapis');

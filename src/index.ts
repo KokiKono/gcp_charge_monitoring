@@ -1,14 +1,10 @@
 import {google, cloudbilling_v1} from 'googleapis';
 
-const PROJECT_ID = process.env.TARGET_PID;
-const PROJECT_NAME = `projects/${PROJECT_ID}`;
+export const chargeMonitoring = (data, context, callback) => {
+    const dataStr = Buffer.from(data.data, 'base64').toString();
+    const pubsubMessage = JSON.parse(dataStr);
 
-const chargeMonitoring = (event, callback) => {
-    const pubsubMessage = event.data;
-    const dataStr = Buffer.from(pubsubMessage.data, 'base64').toString();
-    const data = JSON.parse(dataStr);
-
-    if (this.isCostOver(data.budgetAmount, data.costAmount)) {
+    if (this.isCostOver(pubsubMessage.budgetAmount, pubsubMessage.costAmount)) {
         console.log('over amount');
     } else {
         console.log('not over amount');
@@ -23,4 +19,3 @@ export const isEnableBilling = async (projectName: string, projects: cloudbillin
     const info = await projects.getBillingInfo({name: projectName});
     return info.data.billingEnabled;
 }
-export default chargeMonitoring;

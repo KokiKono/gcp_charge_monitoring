@@ -12,14 +12,15 @@
     "node": "8"
   },
   "scripts": {
-    "deploy_emulator": "functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
+    "deploy_local": "functions deploy $npm_package_config_function_name -S lib --trigger-topic $npm_package_config_pubsub_topic_name",
+    "deploy_dev": "gcloud functions deploy --runtime=nodejs8 --source=lib chargeMonitoring --trigger-topic charge_alert",
     "unit_test": "$(npm bin)/ava test/unit.test.pubsub.js",
     "integration_test": "concurrently \"$(npm bin)/ava test/integration.test.pubsub.js\"",
     "system_test": "cross-env GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path $(npm bin)/ava test/system.pubsub.test.js",
     "create_topic": "gcloud pubsub topics create $npm_package_config_pubsub_topic_name",
     "deploy_function": "gcloud beta functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
     "functions": "$(npm bin)/functions",
-    "build": "$(npm bin)/tsc",
+    "build": "concurrently \"$(npm bin)/tsc\" \"cp package.json lib\"",
     "watch": "$(npm bin)/tsc --watch"
   },
   "repository": {
