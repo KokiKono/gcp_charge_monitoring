@@ -2,7 +2,7 @@
   "name": "gcp_charge_monitoring",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "config": {
     "pubsub_topic_name": "charge_alert",
     "function_name": "chargeMonitoring",
