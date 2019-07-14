@@ -6,17 +6,18 @@
   "config": {
     "pubsub_topic_name": "charge_alert",
     "function_name": "chargeMonitoring",
-    "credentials_path": "/secret/google_credentials.json"
+    "credentials_path": "/secret/google_credentials.json",
+    "target_project": "gcp-estimate-shutdown"
   },
   "engines": {
     "node": "8"
   },
   "scripts": {
     "deploy_local": "functions deploy $npm_package_config_function_name -S lib --trigger-topic $npm_package_config_pubsub_topic_name",
-    "deploy_dev": "gcloud functions deploy --runtime=nodejs8 --source=lib chargeMonitoring --trigger-topic charge_alert",
+    "deploy_dev": "gcloud functions deploy --set-env-vars P_NAME=$npm_package_config_target_project --runtime=nodejs8 --source=lib chargeMonitoring --trigger-topic charge_alert",
     "unit_test": "concurrently \"tsc\" \"$(npm bin)/ava src/test/unit.test.pubsub.ts\"",
     "integration_test": "concurrently \"tsc\" \"$(npm bin)/ava src/test/integration.test.pubsub.ts\"",
-    "system_test": "cross-env GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path concurrently \"tsc\" \"$(npm bin)/ava src/test/system.pubsub.test.ts\"",
+    "system_test": "cross-env P_NAME=$npm_package_config_target_project GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path concurrently \"tsc\" \"$(npm bin)/ava src/test/system.pubsub.test.ts\"",
     "create_topic": "gcloud pubsub topics create $npm_package_config_pubsub_topic_name",
     "deploy_function": "gcloud beta functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
     "functions": "$(npm bin)/functions",
