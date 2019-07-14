@@ -1,7 +1,7 @@
-const test = require('ava');
+import test from 'ava';
 const sinon = require('sinon');
 
-const {chargeMonitoring} = require('../lib');
+const {chargeMonitoring} = require('../');
 const consoleLog = sinon.stub(console, 'log');
 
 test.cb('charge monitoring: over amount case', t => {
@@ -18,7 +18,7 @@ test.cb('charge monitoring: over amount case', t => {
 });
 
 test('monitor logic', t => {
-    const {isCostOver} = require('../lib');
+    const {isCostOver} = require('../');
 
     t.true(isCostOver(100, 200));
     t.false(isCostOver(200, 100));
@@ -26,7 +26,7 @@ test('monitor logic', t => {
 
 
 test('charge monitoring: isEnableBilling', async (t) => {
-    const {isEnableBilling} = require('../lib');
+    const {isEnableBilling} = require('../');
     const PROJECT_NAME = 'is_enable_billing';
     // mock Billing API
     const {google} = require('googleapis');
