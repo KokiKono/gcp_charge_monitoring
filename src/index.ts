@@ -19,3 +19,13 @@ export const isEnableBilling = async (projectName: string, projects: cloudbillin
     const info = await projects.getBillingInfo({name: projectName});
     return info.data.billingEnabled;
 }
+
+export const disableBilling = async (projectName: string, projects: cloudbilling_v1.Resource$Projects) => {
+    await projects.updateBillingInfo({name: projectName, requestBody: {
+        billingEnabled: false
+    }});
+    // check billing info
+    const is_enableBilling = await this.isEnableBilling(projectName, projects);
+    if (is_enableBilling === false) return true;
+    return false;
+}

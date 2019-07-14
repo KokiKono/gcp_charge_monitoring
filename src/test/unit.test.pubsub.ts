@@ -44,3 +44,39 @@ test('charge monitoring: isEnableBilling', async (t) => {
     const result = await isEnableBilling(PROJECT_NAME, cloudbilling.projects);
     t.true(result);
 })
+
+
+test('charge monitoring: disableBilling', async (t) => {
+    const {disableBilling} = require('../');
+    const PROJECT_NAME = 'will_disable_billing';
+
+    const {google} = require('googleapis');
+    const cloudbilling = google.cloudbilling('v1');
+    // Mock Billing API updateBillingInfo
+    sinon
+        .mock(cloudbilling.projects)
+        .expects('updateBillingInfo')
+        .once()
+        .withArgs({name: PROJECT_NAME, requestBody: {
+            billingEnabled: false,
+        }})
+        .resolves({
+            billingEnabled: false,
+        });
+    // Mock Billing API getBillingInfo for check
+    sinon
+        .mock(cloudbilling.projects)
+        .expects('getBillingInfo')
+        .once()
+        .withArgs({name: PROJECT_NAME})
+        .resolves({
+            data: {
+                billingEnabled: false,
+            }
+        });
+
+    // run disable billing
+    const result = await disableBilling(PROJECT_NAME, cloudbilling.projects);
+    // return result success=true, failed=false
+    t.true(result);
+})
