@@ -14,14 +14,14 @@
   },
   "scripts": {
     "deploy_local": "functions deploy $npm_package_config_function_name -S lib --trigger-topic $npm_package_config_pubsub_topic_name",
-    "deploy_dev": "gcloud functions deploy --set-env-vars P_NAME=$npm_package_config_target_project --runtime=nodejs8 --source=lib chargeMonitoring --trigger-topic charge_alert",
-    "unit_test": "concurrently \"tsc\" \"$(npm bin)/ava src/test/unit.test.pubsub.ts\"",
-    "integration_test": "concurrently \"tsc\" \"$(npm bin)/ava src/test/integration.test.pubsub.ts\"",
-    "system_test": "cross-env P_NAME=$npm_package_config_target_project GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path concurrently \"tsc\" \"$(npm bin)/ava src/test/system.pubsub.test.ts\"",
+    "deploy_dev": "gcloud functions deploy --set-env-vars P_NAME=$npm_package_config_target_project --runtime=nodejs8 --source=lib $npm_package_config_function_name --entry-point chargeMonitoring --trigger-topic charge_alert",
+    "unit_test": "tsc && $(npm bin)/ava src/test/unit.test.pubsub.ts",
+    "integration_test": "tsc && $(npm bin)/ava src/test/integration.test.pubsub.ts",
+    "system_test": "cross-env P_NAME=$npm_package_config_target_project GOOGLE_APPLICATION_CREDENTIALS=${PWD}$npm_package_config_credentials_path && $(npm bin)/tsc && $(npm bin)/ava src/test/system.pubsub.test.ts",
     "create_topic": "gcloud pubsub topics create $npm_package_config_pubsub_topic_name",
     "deploy_function": "gcloud beta functions deploy $npm_package_config_function_name --trigger-topic $npm_package_config_pubsub_topic_name",
     "functions": "$(npm bin)/functions",
-    "build": "concurrently \"$(npm bin)/tsc\" \"cp package.json lib\"",
+    "build": "$(npm bin)/tsc && cp package.json lib",
     "watch": "$(npm bin)/tsc --watch"
   },
   "ava": {
@@ -47,7 +47,6 @@
     "@google-cloud/pubsub": "^0.30.1",
     "ava": "^2.2.0",
     "child_process": "^1.0.2",
-    "concurrently": "^4.1.1",
     "cross-env": "^5.2.0",
     "moment": "^2.24.0",
     "sinon": "^7.3.2",
