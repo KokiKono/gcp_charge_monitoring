@@ -18,7 +18,7 @@ export const chargeMonitoring = async (data: any, context: any, callback: any) =
             if (result) {
                 console.log(`disable project: ${P_NAME}`);
             } else {
-                console.log(`faild disable project: ${P_NAME}`);
+                console.log(`failed disable project: ${P_NAME}`);
             }
         }
     } else {
