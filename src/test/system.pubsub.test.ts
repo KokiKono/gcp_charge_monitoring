@@ -8,7 +8,7 @@ const pJson = require('../../package.json');
 const function_name = pJson.config.function_name;
 const topicName = pJson.config.pubsub_topic_name;
 const target_project = pJson.config.target_project;
-const baseCmd = `gcloud beta functions`;
+const baseCmd = `gcloud functions`;
 
 test(`charge monitoring: should print over amount`, async (t: any) => {
   t.plan(2);
